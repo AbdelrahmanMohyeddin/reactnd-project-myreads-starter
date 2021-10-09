@@ -14,7 +14,7 @@ export default class Shelf extends Component{
                             this.props.books.filter(b => b.shelf === this.props.shelfType).length > 0 &&
                             this.props.books.filter(b => b.shelf === this.props.shelfType).map(book => { 
                                 return (
-                                    <BookItem getAll={this.props.getAll} key={book.id} book={book}/>
+                                    <BookItem getAll={this.props.getAll} key={book.id} bookShelf={book.shelf} book={book}/>
                                 )
                             })
                         }

@@ -1,13 +1,34 @@
 import React,{ Component, Suspense } from "react";
 import { Link } from "react-router-dom";
+import * as BooksAPI from './BooksAPI'
 const BookShelf = React.lazy(() => import('./BookShelf'))
 
 export default class ListOfBooks extends Component{
     
-    constructor(props){
-        super(props)
-        this.props.getAll();
+    state = {
+        books:[]
     }
+
+    componentDidMount(){
+
+        this.getAll = () =>{
+            BooksAPI.getAll()
+            .then(allBooks => {
+            this.setState({
+                books:allBooks
+            })
+            })
+        }
+
+        BooksAPI.getAll()
+        .then(allBooks => {
+          this.setState({
+            books:allBooks
+          })
+        })
+       
+    }
+
     render(){
         return(
             <div className="list-books">
@@ -17,9 +38,9 @@ export default class ListOfBooks extends Component{
                 <div className="list-books-content">
                 <div>
                     <Suspense fallback={<div>Loading...</div>}>
-                        <BookShelf getAll={this.props.getAll} books={this.props.books} shelfName={"Currently Reading"} shelfType={"currentlyReading"}/>
-                        <BookShelf getAll={this.props.getAll} books={this.props.books} shelfName={"Want To Read"} shelfType={"wantToRead"}/>
-                        <BookShelf getAll={this.props.getAll} books={this.props.books} shelfName={"Read"} shelfType={"read"}/>
+                        <BookShelf getAll={this.getAll} books={this.state.books} shelfName={"Currently Reading"} shelfType={"currentlyReading"}/>
+                        <BookShelf getAll={this.getAll} books={this.state.books} shelfName={"Want To Read"} shelfType={"wantToRead"}/>
+                        <BookShelf getAll={this.getAll} books={this.state.books} shelfName={"Read"} shelfType={"read"}/>
                     </Suspense>
                 </div>
                 </div>
